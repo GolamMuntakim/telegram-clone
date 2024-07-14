@@ -7,14 +7,45 @@ import { MdOutlineAnimation } from "react-icons/md";
 import { FaRegCircleQuestion } from "react-icons/fa6";
 import { IoMdBug } from "react-icons/io";
 import { FaCirclePlus } from "react-icons/fa6";
+import { useEffect, useState } from "react";
 // import bg from "../public/images/bg.JPG"
 
 function App() {
+  const [chats, setChats] = useState([])
+  const [selectedChat, setSelectedChat] = useState(null);
+  
+  useEffect(() => {
+    const fetchChats = async () => {
+        try {
+            const response = await fetch('https://devapi.beyondchats.com/api/get_chat_messages?chat_id=3888');
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setChats(data.data); // Assuming the response data is an array of chats
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    fetchChats();
+}, []);
+
+console.log(chats)
+const getDayOfWeekAbbreviated = (timestamp) => {
+  const date = new Date(timestamp);
+  const options = { weekday: 'short' }; // 'short' gives abbreviated format like "Mon"
+  return new Intl.DateTimeFormat('en-US', options).format(date);
+};
+const handleChatHeadClick = (chat) => {
+  setSelectedChat(chat);
+};
+
   return (
     <>
       <div className="w-full ">
-        <div className="flex  gap-40 w-full">
-          <div className="w-[350px] ">
+        <div className="flex   ">
+          <div  className="w-[400px] ">
             <div>
               <div className="navbar bg-[#fefffe]">
                 <div className="navbar-start">
@@ -58,7 +89,7 @@ function App() {
                 </div>
                 <div className="navbar-end">
                   <button className="btn btn-ghost btn-circle">
-                    <div className="">
+                    <div className="mr-52">
                       <label className="input  flex items-center gap-2 rounded-full bg-[#f5f4f4]">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +109,13 @@ function App() {
                 <div>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
+            {/*  */}
+          <div id="sidebar" className="hover:overflow-y-auto max-h-[calc(100vh-80px)] ">
+          {
+              chats.map((chat,idx)=>(
+               
+                 <div  onClick={() => handleChatHeadClick(chat)} 
+                 style={{ cursor: "pointer" }}  className="flex items-center gap-4 mt-4 pr-4" key={idx}>
                 <div className="ml-2">
                 <div className="chat-image avatar">
     <div className="w-10 rounded-full">
@@ -88,16 +125,26 @@ function App() {
     </div>
     </div>
                 </div>
+                <div className="flex justify-between gap-10 w-56"> 
+                 <div> 
+                  <h1>{chat?.sender?.name}</h1>
+                  <h1>{chat?.message.slice(0,20)}</h1>
+                  </div>
                 <div>
-                  <h1>Name</h1>
+                <h1>{getDayOfWeekAbbreviated(chat?.created_at)}</h1>
+                </div>
                 </div>
               </div>
+              
+              ))
+            }
+          </div>
             </div>
 
           </div>
           <div className="w-full h-screen  ">
-            <div className=" h-screen w-full bg-[url('/images/bg.JPG')] bg-cover">
-
+            <div id="main" className=" h-screen w-full bg-[url('/images/bg.JPG')] bg-cover">
+            {selectedChat?.sender?.name}
             </div>
           </div>
         </div>
