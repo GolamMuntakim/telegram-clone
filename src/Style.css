@@ -1,0 +1,68 @@
+/* 
+
+.custom-tab-list {
+    
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    overflow-y: hidden;
+  }
+ 
+  .custom-tab {
+  
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 2px solid #ccc; 
+    overflow: hidden; 
+    
+  }
+  
+  .custom-tab:focus {
+    outline: none;
+  }
+  
+  .custom-tab.react-tabs__tab--selected {
+    border-bottom:2px solid #3290ed; 
+    color: #3290ed;
+  }
+ 
+ */
+
+
+ /* styles.css */
+
+.custom-tabs {
+    width: 100%; /* Adjust width as needed */
+    overflow: hidden; /* Hide overflow to prevent scrollbar */
+}
+
+.custom-tab-list {
+    display: flex; /* Use flexbox for horizontal layout */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden;
+    transition: transform 0.3s ease; /* Smooth transition for tab sliding */
+}
+
+.custom-tab {
+    padding: 10px 20px; /* Adjust padding as needed */
+    cursor: pointer;
+    border-bottom: 2px solid transparent; /* Transparent border initially */
+    color: #333;
+    font-size: 16px;
+    overflow: hidden;
+    transition: border-bottom-color 0.3s ease, color 0.3s ease; /* Smooth transition for tab styles */
+}
+
+.custom-tab:focus {
+    outline: none;
+}
+
+.react-tabs__tab--selected {
+    font-weight: bold;
+    color: #3290ed;
+    border-bottom-color: #3290ed; /* Color for selected tab indicator */
+}
